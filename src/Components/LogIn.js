@@ -4,7 +4,7 @@ import { FormErrors } from './FormErrors';
 import { Link } from 'react-router-dom';
 import '../assets/css/custom.css'
 import axios from 'axios';
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 class SignIn extends Component {
 
@@ -81,7 +81,7 @@ class SignIn extends Component {
     render() {
         return (
             <div className="text-center divclasscenter"  >
-                <form className="form-signup" method = "POST">
+                <form className="form-signup" method="POST">
                     <img className="mb-4" src="https://cdn6.f-cdn.com/build/icons/fl-logo.svg" alt="" />
                     <h1 className="h3 mb-3 font-weight-normal">Please Sign In</h1>
                     <label className="sr-only">Email address</label>

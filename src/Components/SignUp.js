@@ -119,7 +119,7 @@ class SignUp extends Component {
 
                     <span className="login-form-signup-link">
                         Already a Freelancer.com member?
-                        <Link to="/"><a href="#" className="switch-to-login">Log In</a></Link>
+                        <Link to="/login"><a href="#" className="switch-to-login">Log In</a></Link>
                     </span>
                 </form>
 
