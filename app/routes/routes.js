@@ -7,4 +7,10 @@ module.exports = function (app) {
 
     //SignUp
     app.post('/signup', api_controller.signup);
+
+     //Upload Image
+     app.post('/uploadImage', api_controller.uploadImage);
+
+
+     
 }
