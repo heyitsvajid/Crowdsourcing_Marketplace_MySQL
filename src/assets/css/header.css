@@ -9,8 +9,16 @@
   font-family: arial;
 }
 
+nav.nav.dark-nav {
+  background-color: white !important;
+}
+.dark-nav .list > li > a {
+  color: black !important;
+}
+
 .logo{
-  margin:10px
+  margin:10px;
+ 
 }
 .container:after, .container:before {
   content: "";

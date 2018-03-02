@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import '../assets/css/header.css'
+import { Link } from 'react-router-dom';
 
 
 // create class
 class Header extends Component {
 
-
+//<img className="logo" src="https://cdn6.f-cdn.com/build/icons/fl-logo.svg" alt="" height="40" width="170" />
   //<a className="brand" href="#">freelancer</a>
   //<img className="mb-4" src={require('../assets/freelancer_32_32.png')} alt="" height="30" width="30"/>
   render() {
@@ -14,9 +15,7 @@ class Header extends Component {
         <nav className="nav dark-nav">
           <div className="container">
             <div className="nav-heading">
-              <img className="logo" src="https://cdn6.f-cdn.com/build/icons/fl-logo.svg"
-                alt="" height="50%" width="50%" />
-
+            <img className="logo" src="https://cdn6.f-cdn.com/build/icons/fl-logo.svg" alt="" height="40" width="170" />
             </div>
             <div className="menu" id="open-navbar1">
               <ul className="list">
