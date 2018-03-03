@@ -1,8 +1,27 @@
 import React, { Component } from 'react';
 import Header from './Header'
+import Footer from './Footer'
+import Table from './Table'
 import { withRouter } from 'react-router-dom'
 
 class Dashboard extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            tableHeaderData: ['Name', 'Email'],
+            tableRowData: [{ name: 'Vajid', email: 'Vajid9@gmail.com' },
+            { name: 'Vajid', email: 'Vajid9@gmail.com' }]
+        };
+    }
+    onBackButtonEvent(e) {
+        e.preventDefault();
+        this.props.history.push('/home');
+    }
+
+    componentDidMount() {
+        window.onpopstate = this.onBackButtonEvent.bind(this);
+    }
+
     render() {
         return (
             <div>
@@ -20,60 +39,23 @@ class Dashboard extends Component {
                                 {/* <h1>Blank</h1> */}
                                 <p>This is an example of a blank page that you can use as a starting point for creating new ones.</p>
                                 <div class="col-lg-10">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Striped Rows
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Striped Rows
                         </div>
-                       
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Larry</td>
-                                            <td>the Bird</td>
-                                            <td>@twitter</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                   
-                </div>
+
+                                        <div>
+                                            <Table tableHeaderData={this.state.tableHeaderData} tableRowData={this.state.tableRowData} />
+
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <footer class="sticky-footer">
-                        <div class="container mt-5">
-                            <div class="text-center">
-                                <small>Copyright © Your Website 2018</small>
-                            </div>
-                        </div>
-                    </footer>
-                </div>
+                    <Footer />                </div>
             </div>
 
         );

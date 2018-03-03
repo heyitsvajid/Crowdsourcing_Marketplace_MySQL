@@ -84,6 +84,12 @@ class SignIn extends Component {
                 <form className="form-signup" method="POST">
                     <img className="mb-4" src="https://cdn6.f-cdn.com/build/icons/fl-logo.svg" alt="" />
                     <h1 className="h3 mb-3 font-weight-normal">Please Sign In</h1>
+                    <div>
+                        <div className="panel panel-default">
+                            <FormErrors formErrors={this.state.formErrors} />
+                        </div>
+                    </div>
+
                     <label className="sr-only">Email address</label>
                     <input type="email" name="email" className="form-control" placeholder="Email address" required="" autoFocus=""
                         value={this.state.email} onChange={this.handleUserInput} />
@@ -100,11 +106,6 @@ class SignIn extends Component {
                         onClick={this.handleSubmit.bind(this)}>Log in</button>
                     <p className="mt-5 mb-3 text-muted">© 2017-2018</p>
 
-                    <div>
-                        <div className="panel panel-default">
-                            <FormErrors formErrors={this.state.formErrors} />
-                        </div>
-                    </div>
 
                     <div>
                         <a href="#" id="forgot-password-btn" className="login-form-forgot forgot-password">Forgot Password?</a>
