@@ -21,8 +21,10 @@ class Header extends Component {
             <div className="menu" id="open-navbar1">
               <ul className="list">
                 <li><Link to='/home'><a >Home</a></Link ></li>
-                <li><a to='/dashboard' >Dashboard</a></li>
-                <li><a>My Bids</a></li>
+                <li ><Link to='/dashboard'><a >Dashboard</a></Link></li>
+                <li ><Link to='/myprojects'><a >My Projects</a></Link></li>
+                <li>    <Link to="/postproject">  <button type="button" class="btn btn-primary">Post Project</button></Link>
+</li>
                 <li class="dropdown mr-2">
                   <a data-toggle="dropdown" class="dropdown-toggle"><img className="mr-2" src={require('../assets/freelancer_32_32.png')} alt="" height="30" width="30" /> <b class="caret"></b></a>
                   <ul class="dropdown-menu" >
@@ -31,8 +33,7 @@ class Header extends Component {
                     <li class="divider"></li>
                   </ul>
                 </li>
-                <Link to="/postproject">  <button type="button" class="btn btn-primary mt-2">Post Project</button></Link>
-
+            
               </ul>
             </div>
           </div>

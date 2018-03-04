@@ -4,12 +4,12 @@ import Footer from './Footer'
 import Table from './Table'
 import { withRouter } from 'react-router-dom'
 
-class Dashboard extends Component {
+class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            action:'dashboard',
-            averageBid:'1000',
+            action: 'open',
+            averageBid: '1000',
             tableHeaderData: ['Title', 'Employer', 'Avg Bid', 'Your Bid', 'Status'],
             tableRowData: [{ budget: 'Vajid', email: 'Vajid9@gmail.com' },
             { budget: 'Vajid', email: 'Vajid9@gmail.com' }]
@@ -22,6 +22,7 @@ class Dashboard extends Component {
 
     componentDidMount() {
         window.onpopstate = this.onBackButtonEvent.bind(this);
+            
     }
 
     render() {
@@ -32,9 +33,9 @@ class Dashboard extends Component {
                     <div class="container-fluid">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="index.html">Dashboard</a>
+                                <a href="index.html">Home</a>
                             </li>
-                            <li class="breadcrumb-item active">Bids Till Date</li>
+                            <li class="breadcrumb-item active">Open Projects</li>
                         </ol>
                         <div class="row mt-1 ml-3">
                             <div class="col-12">
@@ -62,4 +63,4 @@ class Dashboard extends Component {
         );
     }
 }
-export default withRouter(Dashboard);
+export default withRouter(Home);
