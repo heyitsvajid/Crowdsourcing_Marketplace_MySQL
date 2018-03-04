@@ -37,8 +37,8 @@ class SignUp extends Component {
 
         switch (fieldName) {
             case 'name':
-                nameValid = value.length > 1;;
-                fieldValidationErrors.name = nameValid ? '' : ' is too short';
+                nameValid = value.length > 0;;
+                fieldValidationErrors.name = nameValid ? '' : ' is required';
                 break;
             case 'email':
                 emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
@@ -75,11 +75,16 @@ class SignUp extends Component {
             return;
         }
         var apiPayload = {name:name, email:email, password:password};
-         axios.post(signUpAPI, apiPayload)
+         axios.post(signUpAPI, apiPayload) 
             .then(res => {
-                //this.setState({ userdata: res.data });
-                //alert('signup successfull');
-                this.props.history.push('/home');
+                if(res.data.errorMsg!=''){
+                   alert('Unknown error occurred');
+                }else{
+                    localStorage.setItem('id',res.data.data.id);
+                    localStorage.setItem('name',res.data.data.name);
+                    localStorage.setItem('email',res.data.data.email);
+                    this.props.history.push('/home');
+                }
             })
             .catch(err => {
                 console.error(err);
@@ -91,7 +96,11 @@ class SignUp extends Component {
                 <form method = "POST" className="form-signup">
                     <img className="mb-4" src="https://cdn6.f-cdn.com/build/icons/fl-logo.svg" alt="" />
                     <h1 className="h3 mb-3 font-weight-normal">Please Sign Up</h1>
-
+                    <div class='mt-2 mb-2'>
+                        <div className="panel panel-default">
+                            <FormErrors formErrors={this.state.formErrors} />
+                        </div>
+                    </div>
                     <label className="sr-only">Name</label>
                     <input type="text" name="name" className="form-control" placeholder="Name" required="" autoFocus=""
                         value={this.state.name} onChange={this.handleUserInput} />
@@ -110,16 +119,12 @@ class SignUp extends Component {
                         onClick={this.handleSubmit.bind(this)}>Create Account</button>
                     <p className="mt-5 mb-3 text-muted">© 2017-2018</p>
 
-                    <div >
-                        <div className="panel panel-default">
-                            <FormErrors formErrors={this.state.formErrors} />
-                        </div>
-                    </div>
+                    
 
 
                     <span className="login-form-signup-link">
                         Already a Freelancer.com member?
-                        <Link to="/login"><a href="#" className="switch-to-login">Log In</a></Link>
+                        <Link to="/login"><a className="switch-to-login">Log In</a></Link>
                     </span>
                 </form>
 

@@ -11,6 +11,7 @@ class SignIn extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            errorMessage: '',
             user: {},
             email: '',
             password: '',
@@ -70,15 +71,35 @@ class SignIn extends Component {
         var apiPayload = { email: email, password: password };
         axios.post(signUpAPI, apiPayload)
             .then(res => {
-                //this.setState({ user: res.data });
-                debugger
-                this.props.history.push('/home');
+                if (res.data.errorMsg != '') {
+                    this.setState({
+                        errorMessage: res.data.errorMsg
+                    });
+                } else {
+                    this.setState({
+                        errorMessage: ''
+                    });
+                    debugger
+                    localStorage.setItem('id', res.data.data.id);
+                    localStorage.setItem('name', res.data.data.name);
+                    localStorage.setItem('email', res.data.data.email);
+                    this.props.history.push('/home');
+                }
             })
             .catch(err => {
                 console.error(err);
             });
     }
+
+    renderRows() {
+        if (this.state.errorMessage != '') {
+            return (
+                <p class="text-danger" >{this.state.errorMessage}</p>
+            );
+        }
+    }
     render() {
+
         return (
             <div className="text-center divclasscenter"  >
                 <form className="form-signup" method="POST">
@@ -87,6 +108,7 @@ class SignIn extends Component {
                     <div>
                         <div className="panel panel-default">
                             <FormErrors formErrors={this.state.formErrors} />
+                            {this.renderRows()}
                         </div>
                     </div>
 
@@ -108,7 +130,7 @@ class SignIn extends Component {
 
 
                     <div>
-                        <a href="#" id="forgot-password-btn" className="login-form-forgot forgot-password">Forgot Password?</a>
+                        <a href='' id="forgot-password-btn" >Forgot Password?</a>
 
                     </div>
 
@@ -117,7 +139,7 @@ class SignIn extends Component {
 
                         <span className="login-form-signup-link">
                             Don't have an account?
-                        <Link to="/signup"><a href="#" className="switch-to-login">Sign Up</a></Link>
+                        <Link to="/signup"><a className="switch-to-signup ml-2">Sign Up</a></Link>
                         </span>
 
                     </div>
