@@ -78,7 +78,7 @@ class SignUp extends Component {
          axios.post(signUpAPI, apiPayload) 
             .then(res => {
                 if(res.data.errorMsg!=''){
-                   alert('Unknown error occurred');
+                   alert(res.data.errorMsg);
                 }else{
                     localStorage.setItem('id',res.data.data.id);
                     localStorage.setItem('name',res.data.data.name);
