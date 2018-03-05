@@ -20,6 +20,17 @@ module.exports = function (app) {
     //Get profile image
     app.post('/getProfileImage', api_controller.getprofileimage);
 
-     //Post Project
-     app.post('/postProject', api_controller.postProject);
+    //Post Project
+    app.post('/postProject', api_controller.postProject);
+
+
+    //Post Project
+    app.post('/getOpenProjects', api_controller.getOpenProjects);
+
+
+    //Get Project from id
+    app.post('/getProject', api_controller.getProject);
+
+    //Post bid for project
+    app.post('/postBid', api_controller.postBid);
 }
