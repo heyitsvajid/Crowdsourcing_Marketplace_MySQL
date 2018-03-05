@@ -3,18 +3,48 @@ import Header from './Header'
 import Footer from './Footer'
 import Table from './Table'
 import { withRouter } from 'react-router-dom'
+import axios from 'axios'
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
             action: 'open',
-            averageBid: '1000',
-            tableHeaderData: ['Title', 'Employer', 'Avg Bid', 'Your Bid', 'Status'],
-            tableRowData: [{ budget: 'Vajid', email: 'Vajid9@gmail.com' },
-            { budget: 'Vajid', email: 'Vajid9@gmail.com' }]
+            tableHeaderData: ['Title', 'Employer', 'Skill', 'Avg Bid', 'Budget Range', 'Budget Period','No. of Bids'],
+            tableRowData: []
         };
     }
+
+
+    componentWillMount() {
+        let getOpenProjects = 'http://localhost:3001/getOpenProjects';
+        let id = localStorage.getItem('id');
+        if (id) {
+            var apiPayload = {
+                id: id
+            };
+            axios.post(getOpenProjects, apiPayload)
+                .then(res => {
+                    if (res.data.errorMsg != '') {
+                        this.setState({
+                            errorMessage: res.data.errorMsg
+                        });
+                    } else if (res.data.successMsg != '') {
+                        this.setState({           
+                            tableRowData: res.data.data,
+                        });
+                    } else {
+                        this.setState({
+                            errorMessage: 'Unknown error occurred'
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        }
+    }
+
     onBackButtonEvent(e) {
         e.preventDefault();
         this.props.history.push('/home');
@@ -22,7 +52,7 @@ class Home extends Component {
 
     componentDidMount() {
         window.onpopstate = this.onBackButtonEvent.bind(this);
-            
+
     }
 
     render() {
@@ -57,7 +87,7 @@ class Home extends Component {
                         </div>
                     </div>
 
-                    <Footer />                </div>
+                   {<Footer />}                 </div>
             </div>
 
         );

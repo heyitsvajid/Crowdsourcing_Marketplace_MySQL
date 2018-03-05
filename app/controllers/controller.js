@@ -2,8 +2,9 @@ var db_controller = require('./dbhelper.js');
 var bcrypt = require('bcrypt');
 var multiparty = require('multiparty');
 let fs = require('fs');
-
-
+const BID_STATUS_SENT = 'BID_SENT';
+const BID_STATUS_ACCEPTED = 'BID_ACCEPTED';
+const BID_STATUS_REJECTED = 'BID_REJECTED';
 
 exports.uploadImage = function (req, res) {
     // Login User API
@@ -71,8 +72,8 @@ exports.uploadImage = function (req, res) {
 
 
         } catch (e) {
-            console.log('Catch');
-            resultObject.errorMsg = 'Error Uploading Image';
+            console.log('Catch : '+e.message);
+            resultObject.errorMsg = e.message;
             res.json(resultObject);
             return;
         }
@@ -150,7 +151,7 @@ exports.signup = function (req, res) {
     // SignUp User API
     var resultObject = {
         successMsg: '',
-        errorMsg: 'Error Signing user in',
+        errorMsg: 'Error',
         data: {}
     }
     if (!req.body.name || !req.body.email || !req.body.password) {
@@ -184,32 +185,33 @@ exports.signup = function (req, res) {
                     resultObject.errorMsg = 'Username allready taken';
                     res.json(resultObject);
                     return;
+                }else{
+                    db_controller.getConnection(function (err, connection) {
+                        // Use the connection
+                        let sqlQuery = 'insert into user(name,email,password) values(' + name + ',' + email + ',' + password + ')';
+                        console.log(sqlQuery);
+                        connection.query(sqlQuery, function (error, results, fields) {
+                            // And done with the connection.
+                            connection.release();
+                            // Handle error after the release.
+                            if (error) throw error;
+                            console.log('Sign Up Succcessful');
+                            resultObject.errorMsg = '';
+                            resultObject.successMsg = 'Sign Up Succcessful';
+                            resultObject.data = {
+                                id: results.insertId,
+                                name: name,
+                                email: email
+                            }
+                            res.json(resultObject);
+                            return;
+                        });
+                    });
                 }
             });
         });
 
-        db_controller.getConnection(function (err, connection) {
-            // Use the connection
-            let sqlQuery = 'insert into user(name,email,password) values(' + name + ',' + email + ',' + password + ')';
-            console.log(sqlQuery);
-            connection.query(sqlQuery, function (error, results, fields) {
-                // And done with the connection.
-                connection.release();
-                // Handle error after the release.
-                if (error) throw error;
-                console.log('Sign Up Succcessful');
-                resultObject.errorMsg = '';
-                resultObject.successMsg = 'Sign Up Succcessful';
-                resultObject.data = {
-                    id: results.insertId,
-                    name: name,
-                    email: email
-                }
-                res.json(resultObject);
-
-                return;
-            });
-        });
+        
 
 
     }
@@ -290,10 +292,10 @@ exports.updateprofile = function (req, res) {
             res.json(resultObject);
             return;
         } catch (e) {
-            console.log('Update Succcessful');
-            resultObject.errorMsg = 'Error Occured';
-            resultObject.successMsg = '';
+            console.log('Catch : '+e.message);
+            resultObject.errorMsg = e.message;
             res.json(resultObject);
+            return;
         }
     }
 
@@ -316,7 +318,7 @@ exports.getprofile = function (req, res) {
     } else {
         try {
             let id = "\"" + req.body.id + "\"";
-            if (req.body.about != '') {
+            if (req.body.id != '') {
                 db_controller.getConnection(function (err, connection) {
                     // Use the connection
                     let sqlGetProfile = 'select * from user where id=' + id;
@@ -352,7 +354,7 @@ exports.getprofile = function (req, res) {
 };
 
 exports.getprofileimage = function (req, res) {
-    // SignUp User API
+    // getprofileimage API
     var resultObject = {
         successMsg: '',
         errorMsg: 'Error fetching image',
@@ -366,7 +368,8 @@ exports.getprofileimage = function (req, res) {
     } else {
         try {
             let id = "\"" + req.body.id + "\"";
-            if (req.body.about != '') {
+
+            if (req.body.id != '') {
                 db_controller.getConnection(function (err, connection) {
                     // Use the connection
                     let sqlGetProfileId = 'select profile_id from user where id=' + id;
@@ -426,7 +429,7 @@ exports.postProject = function (req, res) {
         let { path: tempPath, originalFilename } = files.file[0];
         console.log(files);
         var fileType = originalFilename.split(".");
-        let copyToPath = "./app/files/" + fields.id + '.' + fileType[1];
+        let copyToPath = "./app/files/_" + Date.now() + '_.' + fileType[1];
         console.log(copyToPath);
         try {
             fs.readFile(tempPath, (err, data) => {
@@ -487,5 +490,164 @@ exports.postProject = function (req, res) {
         }
     })
 
+
+};
+
+
+exports.getOpenProjects = function (req, res) {
+    // SignUp User API
+    var resultObject = {
+        successMsg: '',
+        errorMsg: 'Error fetching profile',
+        data: {}
+    }
+    if (!req.body.id) {
+        console.log('No Id provided');
+        resultObject.errorMsg = 'No Id provided';
+        res.json(resultObject);
+        return;
+    } else {
+        try {
+            if (req.body.id != '') {
+                db_controller.getConnection(function (err, connection) {
+                    // Use the connection
+                   // let sqlGetProjectDetail = 'select project.id,user.name,title,main_skill_id,budget_range,budget_period from project inner join user on project.employer_id=user.id';
+// let sqlGetProjectDetail = 'select project_avg_detail.* from (select a.id,a.employer_id,user.name,a.title,a.main_skill_id,a.budget_range,a.budget_period,COALESCE(avg(b.bid_amount),0) as average '+ 
+// 'from project inner join user on project.employer_id=user.id,project a left outer join bid b on a.id=b.project_id group by a.id,a.title) as project_avg_detail where project_avg_detail.employer_id!='+req.body.id;
+                   
+let sqlGetProjects = 'select c.name,sub1.* from (select a.id,a.employer_id,a.title,a.main_skill_id,a.budget_range,a.budget_period,COALESCE(avg(b.bid_amount),0) as average ,count(b.project_id) as count '+
+'from project a left outer join bid b on a.id=b.project_id group by a.id,a.title) as sub1,user c where c.id=sub1.employer_id and employer_id!='+req.body.id;  
+                   console.log(sqlGetProjects);
+                    connection.query(sqlGetProjects, function (error, results, fields) {
+                        if (error) throw error;
+                        console.log(results);
+                        connection.release();
+                        console.log('Fetch projects Succcessful');
+                        resultObject.errorMsg = '';
+                        resultObject.successMsg = 'Fetch projects Succcessful';
+                        resultObject.data = results;
+                        res.json(resultObject);
+                        return;
+                    });
+                });
+            }
+
+
+        } catch (e) {
+            console.log('Error Occured');
+            resultObject.errorMsg = 'Error Occured';
+            resultObject.successMsg = '';
+            res.json(resultObject);
+        }
+    }
+
+};
+
+exports.getProject = function (req, res) {
+    // Get project detail from id API
+    var resultObject = {
+        successMsg: '',
+        errorMsg: 'Error fetching project',
+        data: {}
+    }
+    if (!req.body.id) {
+        console.log('No Id provided');
+        resultObject.errorMsg = 'No Id provided';
+        res.json(resultObject);
+        return;
+    } else {
+        try {
+            let id = "\"" + req.body.id + "\"";
+            if (req.body.id != '') {
+                db_controller.getConnection(function (err, connection) {
+                    // Use the connection
+                    let sqlGetProject = 'select * from project where id=' + id;
+                    console.log(sqlGetProject);
+                    connection.query(sqlGetProject, function (error, results1, fields) {
+                        if (error) throw error;
+
+                        console.log('Fetch project Succcessful');
+                        resultObject.errorMsg = '';
+                        resultObject.successMsg = 'Fetch project Succcessful';
+                        let sqlGetProjectBid = 'select * from bid where project_id=' + id + 'and user_id=' + req.body.currentUserId;
+                        console.log(sqlGetProjectBid);
+                        connection.query(sqlGetProjectBid, function (error, results, fields) {
+                            if (error) throw error;
+
+                            console.log('Fetch bid Succcessful');
+                            resultObject.errorMsg = '';
+                            resultObject.successMsg = 'Fetch bid Succcessful';
+                            console.log(results);
+                            var flag = results.length > 0;
+                            resultObject.data = {
+                                title: results1[0].title,
+                                skill: results1[0].main_skill_id,
+                                description: results1[0].description,
+                                budget: results1[0].budget_range,
+                                period: results1[0].budget_period,
+                                bidNowButton: !flag,
+                            }
+
+                            connection.release();
+                            res.json(resultObject);
+                            return;
+                        });
+
+                    });
+                });
+            }
+
+
+        } catch (e) {
+            console.log('Error Occured');
+            resultObject.errorMsg = 'Error Occured';
+            resultObject.successMsg = '';
+            res.json(resultObject);
+        }
+    }
+
+};
+
+exports.postBid = function (req, res) {
+    // postBid API
+    var resultObject = {
+        successMsg: '',
+        errorMsg: 'Error posting bid',
+        data: {}
+    }
+    if (!req.body.projectId || !req.body.employeeId || !req.body.period || !req.body.amount ) {
+        console.log('No name, email and password');
+        resultObject.errorMsg = 'Please Provide project id , employee id, amount and period';
+        res.json(resultObject);
+        return;
+    } else {
+
+        let projectId = "\"" + req.body.projectId + "\"";
+        let employeeId = "\"" + req.body.employeeId + "\"";
+        let amount = "\"" + req.body.amount + "\"";
+        let period = "\"" + req.body.period + "\"";
+        let staus = "\"" + BID_STATUS_SENT + "\"";
+
+        db_controller.getConnection(function (err, connection) {
+            // Use the connection
+            let sqlQuery = 'insert into bid(project_id,user_id,bid_period,bid_amount,bid_status)'+
+            ' values(' + projectId + ',' + employeeId + ',' + period +',' + amount +',' + staus + ')';
+            console.log(sqlQuery);
+            connection.query(sqlQuery, function (error, results, fields) {
+                // And done with the connection.
+                connection.release();
+                // Handle error after the release.
+                if (error) throw error;
+                console.log('Bid Succcessful');
+                resultObject.errorMsg = '';
+                resultObject.successMsg = 'Bid Succcessful';
+                res.json(resultObject);
+
+                return;
+            });
+        });
+
+
+    }
 
 };
