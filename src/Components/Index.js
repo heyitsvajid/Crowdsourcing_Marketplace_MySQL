@@ -23,14 +23,14 @@ class Home extends Component {
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-            <Link to="/signup">  <a class="nav-link js-scroll-trigger" href="#about">Sign Up</a></Link>
+            <Link to="/signup">  <a class="nav-link js-scroll-trigger btn btn-warning" href="#about">Sign Up</a></Link>
             </li>
             <li class="nav-item">
-            <Link to="/login">   <a class="nav-link js-scroll-trigger" href="#download">Log In</a></Link>
+            <Link to="/login">   <a class="nav-link js-scroll-trigger btn btn-warning ml-3" href="#download">Log In</a></Link>
             </li>
-            <li class="nav-item ml-2">
+            {/* <li class="nav-item ml-2">
             <Link to="/postproject"> <button type="button" class="btn btn-warning">Post a Project</button></Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
