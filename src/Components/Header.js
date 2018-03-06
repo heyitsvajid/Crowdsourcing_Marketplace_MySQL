@@ -13,10 +13,11 @@ class Header extends Component {
   render() {
     return (
       <header>
-        <nav className="nav dark-nav">
+        <nav className="nav dark-nav fixed-top">
           <div className="container">
             <div className="nav-heading">
               <img className="logo" src="https://cdn6.f-cdn.com/build/icons/fl-logo.svg" alt="" height="40" width="170" />
+
             </div>
             <div className="menu" id="open-navbar1">
               <ul className="list">
@@ -24,16 +25,17 @@ class Header extends Component {
                 <li ><Link to='/dashboard'><a >Dashboard</a></Link></li>
                 <li ><Link to='/myprojects'><a >My Projects</a></Link></li>
                 <li>    <Link to="/postproject">  <button type="button" class="btn btn-primary">Post Project</button></Link>
-</li>
+                </li>
                 <li class="dropdown mr-2">
-                  <a data-toggle="dropdown" class="dropdown-toggle"><img className="mr-2" src={require('../assets/freelancer_32_32.png')} alt="" height="30" width="30" /> <b class="caret"></b></a>
+                  <a data-toggle="dropdown" class="dropdown-toggle"> <b class="caret">Hi, {localStorage.getItem('name')}</b></a>
+                  <h3> </h3>
                   <ul class="dropdown-menu" >
                     <Link to="/profile">  <li><a >Profile</a></li></Link>
                     <Link to="/"> <li><a >Logout</a></li></Link>
                     <li class="divider"></li>
                   </ul>
                 </li>
-            
+
               </ul>
             </div>
           </div>
