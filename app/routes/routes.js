@@ -33,4 +33,7 @@ module.exports = function (app) {
 
     //Post bid for project
     app.post('/postBid', api_controller.postBid);
+
+    //Get bid for project id
+    app.post('/getBids', api_controller.getBids);
 }

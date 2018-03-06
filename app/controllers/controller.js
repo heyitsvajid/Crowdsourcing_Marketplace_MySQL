@@ -72,7 +72,7 @@ exports.uploadImage = function (req, res) {
 
 
         } catch (e) {
-            console.log('Catch : '+e.message);
+            console.log('Catch : ' + e.message);
             resultObject.errorMsg = e.message;
             res.json(resultObject);
             return;
@@ -185,7 +185,7 @@ exports.signup = function (req, res) {
                     resultObject.errorMsg = 'Username allready taken';
                     res.json(resultObject);
                     return;
-                }else{
+                } else {
                     db_controller.getConnection(function (err, connection) {
                         // Use the connection
                         let sqlQuery = 'insert into user(name,email,password) values(' + name + ',' + email + ',' + password + ')';
@@ -211,7 +211,7 @@ exports.signup = function (req, res) {
             });
         });
 
-        
+
 
 
     }
@@ -292,7 +292,7 @@ exports.updateprofile = function (req, res) {
             res.json(resultObject);
             return;
         } catch (e) {
-            console.log('Catch : '+e.message);
+            console.log('Catch : ' + e.message);
             resultObject.errorMsg = e.message;
             res.json(resultObject);
             return;
@@ -385,13 +385,20 @@ exports.getprofileimage = function (req, res) {
                             if (error) throw error;
                             connection.release();
                             console.log('Fetch path Succcessful');
+                            if (results.length > 0) {
+                                console.log('Image in response');
+                                var filePath = results[0].link;
+                                var stat = fs.statSync(filePath);
 
-                            var filePath = results[0].link;
-                            var stat = fs.statSync(filePath);
+                                var img = fs.readFileSync(filePath);
+                                res.writeHead(200, { 'Content-Type': 'image/png' });
+                                res.end(img);
+                            } else {
+                                console.log('No image found');
+                                res.json({ errorMsg: 'No Image found' });
+                                return;
+                            }
 
-                            var img = fs.readFileSync(filePath);
-                            res.writeHead(200, { 'Content-Type': 'image/png' });
-                            res.end(img);
                         });
                     });
                 });
@@ -511,13 +518,13 @@ exports.getOpenProjects = function (req, res) {
             if (req.body.id != '') {
                 db_controller.getConnection(function (err, connection) {
                     // Use the connection
-                   // let sqlGetProjectDetail = 'select project.id,user.name,title,main_skill_id,budget_range,budget_period from project inner join user on project.employer_id=user.id';
-// let sqlGetProjectDetail = 'select project_avg_detail.* from (select a.id,a.employer_id,user.name,a.title,a.main_skill_id,a.budget_range,a.budget_period,COALESCE(avg(b.bid_amount),0) as average '+ 
-// 'from project inner join user on project.employer_id=user.id,project a left outer join bid b on a.id=b.project_id group by a.id,a.title) as project_avg_detail where project_avg_detail.employer_id!='+req.body.id;
-                   
-let sqlGetProjects = 'select c.name,sub1.* from (select a.id,a.employer_id,a.title,a.main_skill_id,a.budget_range,a.budget_period,COALESCE(avg(b.bid_amount),0) as average ,count(b.project_id) as count '+
-'from project a left outer join bid b on a.id=b.project_id group by a.id,a.title) as sub1,user c where c.id=sub1.employer_id and employer_id!='+req.body.id;  
-                   console.log(sqlGetProjects);
+                    // let sqlGetProjectDetail = 'select project.id,user.name,title,main_skill_id,budget_range,budget_period from project inner join user on project.employer_id=user.id';
+                    // let sqlGetProjectDetail = 'select project_avg_detail.* from (select a.id,a.employer_id,user.name,a.title,a.main_skill_id,a.budget_range,a.budget_period,COALESCE(avg(b.bid_amount),0) as average '+ 
+                    // 'from project inner join user on project.employer_id=user.id,project a left outer join bid b on a.id=b.project_id group by a.id,a.title) as project_avg_detail where project_avg_detail.employer_id!='+req.body.id;
+
+                    let sqlGetProjects = 'select c.name,sub1.* from (select a.id,a.employer_id,a.title,a.main_skill_id,a.budget_range,a.budget_period,COALESCE(avg(b.bid_amount),0) as average ,count(b.project_id) as count ' +
+                        'from project a left outer join bid b on a.id=b.project_id group by a.id,a.title) as sub1,user c where c.id=sub1.employer_id and employer_id!=' + req.body.id;
+                    console.log(sqlGetProjects);
                     connection.query(sqlGetProjects, function (error, results, fields) {
                         if (error) throw error;
                         console.log(results);
@@ -615,7 +622,7 @@ exports.postBid = function (req, res) {
         errorMsg: 'Error posting bid',
         data: {}
     }
-    if (!req.body.projectId || !req.body.employeeId || !req.body.period || !req.body.amount ) {
+    if (!req.body.projectId || !req.body.employeeId || !req.body.period || !req.body.amount) {
         console.log('No name, email and password');
         resultObject.errorMsg = 'Please Provide project id , employee id, amount and period';
         res.json(resultObject);
@@ -630,8 +637,8 @@ exports.postBid = function (req, res) {
 
         db_controller.getConnection(function (err, connection) {
             // Use the connection
-            let sqlQuery = 'insert into bid(project_id,user_id,bid_period,bid_amount,bid_status)'+
-            ' values(' + projectId + ',' + employeeId + ',' + period +',' + amount +',' + staus + ')';
+            let sqlQuery = 'insert into bid(project_id,user_id,bid_period,bid_amount,bid_status)' +
+                ' values(' + projectId + ',' + employeeId + ',' + period + ',' + amount + ',' + staus + ')';
             console.log(sqlQuery);
             connection.query(sqlQuery, function (error, results, fields) {
                 // And done with the connection.
@@ -648,6 +655,56 @@ exports.postBid = function (req, res) {
         });
 
 
+    }
+
+};
+
+
+exports.getBids = function (req, res) {
+    // Get project detail from id API
+    var resultObject = {
+        successMsg: '',
+        errorMsg: 'Error fetching project bids',
+        data: {}
+    }
+    if (!req.body.id) {
+        console.log('No project id provided');
+        resultObject.errorMsg = 'No project id provided';
+        res.json(resultObject);
+        return;
+    } else {
+        try {
+            let project_id = "\"" + req.body.id + "\"";
+            if (req.body.id != '') {
+                db_controller.getConnection(function (err, connection) {
+                    // Use the connection
+                    let sqlGetProjectBids = 'select sub1.* from (select a.project_id,a.user_id,b.name,a.bid_period,a.bid_amount'+
+                    ' from bid a join user b on a.user_id=b.id)  as sub1 where project_id=' + project_id;
+                    console.log(sqlGetProjectBids);
+                    connection.query(sqlGetProjectBids, function (error, results, fields) {
+                        if (error) throw error;
+                        console.log('Fetch project bids Succcessful');
+                        resultObject.errorMsg = '';
+                        resultObject.successMsg = 'Fetch project bids Succcessful';
+
+                        console.log(results);
+                        resultObject.data = results;
+                        connection.release();
+                        res.json(resultObject);
+                        return;
+
+
+                    });
+                });
+            }
+
+
+        } catch (e) {
+            console.log('Error Occured');
+            resultObject.errorMsg = 'Error Occured';
+            resultObject.successMsg = '';
+            res.json(resultObject);
+        }
     }
 
 };

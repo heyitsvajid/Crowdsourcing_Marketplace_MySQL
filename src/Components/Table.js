@@ -29,9 +29,9 @@ class Table extends Component {
     return (
       <div class="panel-body">
         <div class="table-responsive">
-          <table class="table table-striped">
+          <table class="table table-striped"  align='center'>
             <thead>
-              <tr>
+              <tr align='center'>
                 {headerNodes}
               </tr>
             </thead>
