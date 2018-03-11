@@ -36,4 +36,25 @@ module.exports = function (app) {
 
     //Get bid for project id
     app.post('/getBids', api_controller.getBids);
+
+    //Get bid for project id
+    app.post('/getUserBidProjects', api_controller.getUserBidProjects);  
+    
+    //Get bid for project id
+    app.post('/getUserProjects', api_controller.getUserProjects);  
+    
+    //Check Login
+    app.get('/isLoggedIn', api_controller.isLoggedIn);  
+    
+      //Logout
+      app.get('/logout', api_controller.logout);  
+
+       //Check Bid 
+       app.post('/checkBid', api_controller.checkBid); 
+       
+       
+       //hireEmployer
+       app.post('/hireEmployer', api_controller.hireEmployer); 
+       
+       
 }
