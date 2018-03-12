@@ -19,8 +19,10 @@ class Table extends Component {
     console.log(headerNodes);
 
     let rowNodes = this.props.tableRowData.map(rowData => {
+      
+      debugger;
       return (
-        <CustomRow averageBid={this.props.averageBid} action={this.props.action} rowData={rowData} >
+        <CustomRow action={this.props.action} rowData={rowData} >
         </CustomRow>
       )
     });
