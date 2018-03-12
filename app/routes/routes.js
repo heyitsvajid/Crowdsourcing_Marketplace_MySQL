@@ -56,5 +56,8 @@ module.exports = function (app) {
        //hireEmployer
        app.post('/hireEmployer', api_controller.hireEmployer); 
        
+       //test method without pool
+       
+       app.post('/getBidsWithoutThreadPool', api_controller.getBidsWithoutThreadPool); 
        
 }
