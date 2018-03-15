@@ -23,6 +23,27 @@ class SignIn extends Component {
     }
 
 
+    componentWillMount(){
+        let url = 'http://localhost:3001/isLoggedIn';
+        axios.get(url,{withCredentials: true})
+            .then(res => {
+                
+                if (res.data.responseCode === 0) {
+                    localStorage.setItem('id', res.data.id);
+                    localStorage.setItem('name', res.data.name);
+                    localStorage.setItem('email', res.data.email);
+                    this.props.history.push('/home')
+                }
+                else {
+                    this.props.history.push('/login')
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+      
+    }
+
     handleUserInput = (e) => {
         const name = e.target.name;
         const value = e.target.value;
@@ -69,8 +90,9 @@ class SignIn extends Component {
             return;
         }
         var apiPayload = { email: email, password: password };
-        axios.post(signUpAPI, apiPayload)
+        axios.post(signUpAPI, apiPayload,{withCredentials: true})
             .then(res => {
+                // eslint-disable-next-line
                 if (res.data.errorMsg != '') {
                     this.setState({
                         errorMessage: res.data.errorMsg
@@ -79,7 +101,6 @@ class SignIn extends Component {
                     this.setState({
                         errorMessage: ''
                     });
-                    debugger
                     localStorage.setItem('id', res.data.data.id);
                     localStorage.setItem('name', res.data.data.name);
                     localStorage.setItem('email', res.data.data.email);
@@ -92,6 +113,7 @@ class SignIn extends Component {
     }
 
     renderRows() {
+        // eslint-disable-next-line
         if (this.state.errorMessage != '') {
             return (
                 <p class="text-danger" >{this.state.errorMessage}</p>
