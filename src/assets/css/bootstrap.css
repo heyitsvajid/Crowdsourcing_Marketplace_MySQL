@@ -8855,7 +8855,10 @@ button.bg-dark:focus {
 .text-white {
   color: #fff !important;
 }
-
+.main-heading{
+  color: black !important;
+  
+}
 .text-primary {
   color: #007bff !important;
 }
@@ -8864,6 +8867,9 @@ a.text-primary:hover, a.text-primary:focus {
   color: #0062cc !important;
 }
 
+h1,h2,h3,h4,h5{
+  color: #007bff !important;
+}
 .text-secondary {
   color: #6c757d !important;
 }

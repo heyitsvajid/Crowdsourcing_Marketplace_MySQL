@@ -7,7 +7,7 @@ var mocha = require('mocha');
 
 it('Test Login with wrong Credentials', function (done) {
     request.post('http://localhost:3001/login',
-        { form: { uname: 'shreykbhatt', password: 'test' } },
+        { form: { email: 'test', password: 'test' } },
         function (error, response, body) {
             //console.log(response.body);
             assert.equal(400, response.statusCode);

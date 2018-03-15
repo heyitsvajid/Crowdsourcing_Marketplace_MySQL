@@ -14,21 +14,28 @@ import './assets/css/bootstrap.min.css'
 import './assets/css/bootstrap-responsive.min.css'
 import profileTest from './Components/profileTest';
 
-ReactDOM.render(
-  <Router>
+import { createStore } from 'redux';
+import allReducers from './Reducers';
+import { Provider } from 'react-redux';
 
-    <div>
-      <Route exact path="/myprojects" component={MyProjects} />
-      <Route exact path="/postproject" component={PostProject} />
-      <Route exact path="/profile" component={Profile} />
-      <Route exact path="/" component={Index} />
-      <Route exact path="/home" component={Home} />
-      <Route exact path="/dashboard" component={Dashboard} />
-      <Route exact path="/login" component={LogIn} />
-      <Route exact path="/signup" component={SignUp} />
-      <Route exact path="/projectitem" component={ProjectItem} />
-    </div>
-  </Router>,
+const store = createStore(allReducers);
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Router>
+      <div>
+        <Route exact path="/myprojects" component={MyProjects} />
+        <Route exact path="/postproject" component={PostProject} />
+        <Route exact path="/profile" component={Profile} />
+        <Route exact path="/" component={Index} />
+        <Route exact path="/home" component={Home} />
+        <Route exact path="/dashboard" component={Dashboard} />
+        <Route exact path="/login" component={LogIn} />
+        <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/projectitem" component={ProjectItem} />
+      </div>
+    </Router>
+  </Provider>,
   document.getElementById('root')
 )
 
