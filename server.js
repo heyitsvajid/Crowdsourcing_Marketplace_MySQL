@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 
 //creating instances
-var app = expressz();
+var app = express();
 var router = express.Router();
 
 //For Client-Session

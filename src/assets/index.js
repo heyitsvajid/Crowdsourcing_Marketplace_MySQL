@@ -6,6 +6,7 @@ import ShoppingList from './Components/test';
 import Header from './Components/Header';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './assets/css/bootstrap.min.css'
+import './assets/css/bootstrap.css'
 import './assets/css/bootstrap-responsive.min.css'
 import $ from 'jquery'; 
 

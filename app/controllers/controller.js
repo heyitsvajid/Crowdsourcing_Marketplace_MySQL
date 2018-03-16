@@ -232,7 +232,7 @@ exports.signup = function (req, res) {
 };
 
 exports.updateprofile = function (req, res) {
-    // SignUp User API
+    // Update Profile API
     var resultObject = {
         successMsg: '',
         errorMsg: 'Error updating profile',
@@ -454,7 +454,7 @@ exports.getprofileimage = function (req, res) {
 
 
 exports.postProject = function (req, res) {
-    // Login User API
+    // Post Project API
     console.log('Post Project API Called');
     var resultObject = {
         successMsg: '',
@@ -1013,15 +1013,15 @@ exports.checkBid = function (req, res) {
 };
 
 exports.hireEmployer = function (req, res) {
-    // postBid API
+    // Hire Employer API
     var resultObject = {
         successMsg: '',
-        errorMsg: 'Error posting bid',
+        errorMsg: 'Error hiring employee',
         data: {}
     }
     if (!req.body.projectId || !req.body.freelancerId) {
         console.log('No name, email and password');
-        resultObject.errorMsg = 'Please Provide project idand freelancer id';
+        resultObject.errorMsg = 'Please Provide project id and freelancer id';
         res.json(resultObject);
         return;
     } else {
