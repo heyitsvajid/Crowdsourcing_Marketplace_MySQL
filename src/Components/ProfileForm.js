@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Image from './Image';
 import { withRouter } from 'react-router-dom'
+import swal from 'sweetalert2'
 
 class ProfileForm extends Component {
   constructor(props) {
@@ -37,7 +38,6 @@ class ProfileForm extends Component {
   }
 
   componentWillMount() {
-    debugger
     let getprofileAPI = 'http://localhost:3001/getprofile';
     let id = localStorage.getItem('id');
     if (id) {
@@ -46,7 +46,6 @@ class ProfileForm extends Component {
       };
       axios.post(getprofileAPI, apiPayload)
         .then(res => {
-          debugger
           if (res.data.errorMsg != '') {
             this.setState({
               errorMessage: res.data.errorMsg
@@ -75,7 +74,6 @@ class ProfileForm extends Component {
   handleSubmit(e) {
     e.preventDefault();
     let updateProfileAPI = 'http://localhost:3001/updateprofile';
-    //alert("abc");
     let name = this.state.name.trim();
     let email = this.state.email.trim();
     let password = this.state.password;
@@ -85,7 +83,11 @@ class ProfileForm extends Component {
     let id = localStorage.getItem('id');
 
     if (!name || !email) {
-      alert('Name, email and password cannot be blank');
+      swal({
+        type: 'error',
+        title: 'Update',
+        text: 'Name, email and password cannot be blank',
+      })
       return;
     }
     var apiPayload = {
@@ -160,7 +162,7 @@ class ProfileForm extends Component {
                 <div class="form-group">
                   <label class="col-lg-3 control-label">Phone</label>
                   <div class="col-lg-8">
-                    <input class="form-control" type="text" name="phone"
+                    <input class="form-control" type="number" name="phone"
                       placeholder="Phone" value={this.state.phone} onChange={this.handleUserInput} />
                   </div>
                 </div>
@@ -171,13 +173,6 @@ class ProfileForm extends Component {
                       placeholder="About Me" value={this.state.about} onChange={this.handleUserInput}></textarea>
                   </div>
                 </div>
-                {/* <div class="form-group">
-                  <label class="col-md-3 control-label">Password:</label>
-                  <div class="col-md-8">
-                    <input class="form-control" type="password" name="password"
-                      value={this.state.password} onChange={this.handleUserInput} />
-                  </div>
-                </div> */}
                 <div class="form-group">
                   <label class="col-md-3 control-label"></label>
                   <div class="col-md-8">

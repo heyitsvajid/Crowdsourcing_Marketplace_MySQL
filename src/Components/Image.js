@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import axios, { post } from 'axios';
+import swal from 'sweetalert2'
+import { withRouter } from 'react-router-dom'
 
 class ImageUpload extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      requireImagePath: '',
       file: '',
       imagePreviewUrl: '',
       successMessage: '',
@@ -15,7 +18,6 @@ class ImageUpload extends Component {
   }
 
   componentWillMount() {
-    debugger
     let getprofileImageAPI = 'http://localhost:3001/getProfileImage';
     let id = localStorage.getItem('id');
     if (id) {
@@ -24,18 +26,14 @@ class ImageUpload extends Component {
       }
       axios.post(getprofileImageAPI, apiPayload)
         .then(res => {
-          debugger
-          //console.log(res.data);
-          let reader = new FileReader();
-          let file = res.data;
-      
-          reader.onloadend = () => {
+          console.log(res.data);
+          if (res.data.errorMsg != '') {
+            console.log('No Image Found');
+          } else {
             this.setState({
-              file: file,
-              imagePreviewUrl: reader.result
+              requireImagePath: res.data.data.src
             });
           }
-          reader.readAsDataURL(file)
         })
         .catch(err => {
           console.error(err);
@@ -55,12 +53,11 @@ class ImageUpload extends Component {
   }
   _handleSubmit(e) {
     e.preventDefault();
-    debugger;
     // TODO: do something with -> this.state.file
     let uploadAPI = 'http://localhost:3001/uploadImage';
     const formData = new FormData();
     formData.append('file', this.state.file);
-    formData.append('id', 1);
+    formData.append('id', localStorage.getItem('id'));
     const config = {
       headers: {
         'content-type': 'multipart/form-data'
@@ -68,9 +65,16 @@ class ImageUpload extends Component {
     }
     post(uploadAPI, formData, config).then(function (res) {
       if (res.data.errorMsg != '') {
-        alert(res.data.errorMsg);
+        swal({
+          type: 'error',
+          text: res.data.errorMsg,
+        })
       } else if (res.data.successMsg != '') {
-        alert(res.data.successMsg);
+        swal({
+          type: 'success',
+          text: res.data.successMsg,
+        })
+
       }
     });
   }
@@ -81,32 +85,48 @@ class ImageUpload extends Component {
     let reader = new FileReader();
     let file = e.target.files[0];
 
-    reader.onloadend = () => {
-      this.setState({
-        file: file,
-        imagePreviewUrl: reader.result
-      });
+    if(file.type == 'image/png'){
+      reader.onloadend = () => {
+        this.setState({
+          file: file,
+          imagePreviewUrl: reader.result
+        });
+      }
+      reader.readAsDataURL(file)
+  
+    }else{
+      swal({
+        type: 'error',
+        title: 'File Type',
+        text: 'Only PNG image types allowed',
+      })
     }
-
-    reader.readAsDataURL(file)
   }
 
-  render() {
-    let { imagePreviewUrl } = this.state;
-    let $imagePreview = null;
+  renderImage() {
+    let requireImagePath = this.state.requireImagePath;
+    let imagePreviewUrl = this.state.imagePreviewUrl;
     if (imagePreviewUrl) {
-      $imagePreview = (<img alt="" class="avatar img-circle" src={imagePreviewUrl} width='200px' height='200px' />);
-    } else {
-      $imagePreview = <img alt="" src="http://www.investeqcapital.com/images/tlpteam/no-image.png" class="avatar img-circle" width='200px' height='200px' />
+      return <img alt="" class="avatar img-circle" src={this.state.imagePreviewUrl} width='200px' height='200px' />;
+    } else if (requireImagePath != '') {
+      var abc = require('../images/' +  requireImagePath);
+      return <img alt="" class="avatar img-circle" src={abc} width='200px' height='200px' />;
     }
+    else {
+      return <img alt="" src="http://www.investeqcapital.com/images/tlpteam/no-image.png" class="avatar img-circle" width='200px' height='200px' />
+    }
+
+  }
+  render() {
+
 
     return (
       <div>
         <form onSubmit={this._handleSubmit}>
-          {$imagePreview}
-          <input class='form-control mt-3' type="file" onChange={this._handleImageChange} /><br />
+          {this.renderImage()}
+          <input class='form-control mt-3' type="file" onChange={this._handleImageChange} required='' /><br />
           <h6 class='mt-2'>Upload a different photo...</h6>
-          <button type="button" class="btn btn-primary mt-2" value="Upload Image" onClick={this._handleSubmit}>Upload Image</button>
+          <button type="submit" class="btn btn-primary mt-2" value="Upload Image" onClick={this._handleSubmit}>Upload Image</button>
         </form>
       </div>
     )
@@ -114,4 +134,4 @@ class ImageUpload extends Component {
 
 }
 
-export default ImageUpload;
+export default withRouter(ImageUpload);

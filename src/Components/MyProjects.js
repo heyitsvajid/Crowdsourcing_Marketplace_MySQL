@@ -6,17 +6,19 @@ import { withRouter } from 'react-router-dom'
 import axios from 'axios'
 import swal from 'sweetalert2'
 
-class Dashboard extends Component {
+class MyProjects extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            action: 'dashboard',
-            tableHeaderData: ['Title', 'Employer', 'Avg Bid', 'My Bid', 'Status'],
-            tableRowData: []
+            openProjectsAction: 'myprojectsopen',
+            progressProjectsAction: 'myprojectsprogress',
+            openProjectstableHeaderData: ['TITLE', 'BIDS', 'AVG BID', 'BUDGET','STATUS'],
+            workInProgressProjectstableHeaderData:['TITLE', 'FREELANCER', 'AWARDED BID', 'DEADLINE','STATUS'],
+            openProjectstableRowData: [],
+            workInProgressProjectstableRowData:[ {title:''}]
         };
-    } 
+    }
     componentWillMount() {
-
         let url = 'http://localhost:3001/isLoggedIn';
         axios.get(url,{withCredentials: true})
             .then(res => {
@@ -25,13 +27,13 @@ class Dashboard extends Component {
                     localStorage.setItem('id', res.data.id);
                     localStorage.setItem('name', res.data.name);
                     localStorage.setItem('email', res.data.email);
-                    let getUserBidProjects = 'http://localhost:3001/getUserBidProjects';
+                    let getUserProjects = 'http://localhost:3001/getUserProjects';
                     let id = localStorage.getItem('id');
                     if (id) {
                         var apiPayload = {
                             id: id
                         };
-                        axios.post(getUserBidProjects, apiPayload)
+                        axios.post(getUserProjects, apiPayload)
                             .then(res => {
                                 // eslint-disable-next-line
                                 if (res.data.errorMsg != '') {
@@ -41,7 +43,8 @@ class Dashboard extends Component {
                                     // eslint-disable-next-line
                                 } else if (res.data.successMsg != '') {
                                     this.setState({
-                                        tableRowData: res.data.data,
+                                        openProjectstableRowData: res.data.data.openProjects,
+                                        workInProgressProjectstableRowData: res.data.data.progressProjects,
                                     });
                                 } else {
                                     this.setState({
@@ -52,8 +55,7 @@ class Dashboard extends Component {
                             .catch(err => {
                                 console.error(err);
                             });
-                    }                    
-                }
+                    }            }
                 else {
                     this.props.history.push('/login')
                     swal({
@@ -67,9 +69,6 @@ class Dashboard extends Component {
             .catch(err => {
                 console.error(err);
             });
-    
-
-
     }
     onBackButtonEvent(e) {
         e.preventDefault();
@@ -83,13 +82,13 @@ class Dashboard extends Component {
     render() {
         return (
             <div class='container'>
-                <Header dashboard={'linkActive'}/>
+                <Header myprojects={'linkActive'}/>
                 <div class="content-wrapper mt-1">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="index.html">Dashboard</a>
+                            <a href="index.html">My Projects</a>
                         </li>
-                        <li class="breadcrumb-item active">My Bids</li>
+                        <li class="breadcrumb-item active">Open</li>
                     </ol>
                     <div class="row mt-1">
                         <div class="col-15">
@@ -97,7 +96,31 @@ class Dashboard extends Component {
                             <div class="col-lg-11 container">
                                 <div class="">
                                     <div>
-                                        <Table action={this.state.action} tableHeaderData={this.state.tableHeaderData} averageBid={this.state.averageBid} tableRowData={this.state.tableRowData} />
+                                        <Table action={this.state.openProjectsAction} tableHeaderData={this.state.openProjectstableHeaderData} tableRowData={this.state.openProjectstableRowData} />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+<br/>
+                                    </div>
+
+                                               <div class="content-wrapper mt-1">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="index.html">My Projects</a>
+                        </li>
+                        <li class="breadcrumb-item active">Work in Progress</li>
+                    </ol>
+                    <div class="row mt-1">
+                        <div class="col-15">
+                            <p></p>
+                            <div class="col-lg-11 container">
+                                <div class="">
+                                    <div>
+                                        <Table action={this.state.progressProjectsAction} tableHeaderData={this.state.workInProgressProjectstableHeaderData} tableRowData={this.state.workInProgressProjectstableRowData} />
 
                                     </div>
                                 </div>
@@ -106,11 +129,11 @@ class Dashboard extends Component {
                     </div>
 
 
-                    {<Footer />}                 </div>
-            </div>
+                                    </div>     
+                                    {<Footer />} </div>
 
 
         );
     }
 }
-export default withRouter(Dashboard);
+export default withRouter(MyProjects);

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-
+import { withRouter } from 'react-router-dom'
 import Footer from './Footer';
 import '../assets/css/home1.css';
 import '../assets/css/home2.css';
 import { Link } from 'react-router-dom';
 
-class Home extends Component {
+class Index extends Component {
 
 
     render() {
@@ -41,7 +41,7 @@ class Home extends Component {
         <div class="container">
           <div class="row">
             <div class="mx-auto mr-5">
-              <h1 class="brand-heading">Hire expert freelancers<br/>for any job, online</h1>
+              <h1 class="main-heading" >Hire expert freelancers<br/>for any job, online</h1>
               <p class="intro-text">Millions of small businesses use Freelancer to turn their ideas into reality.</p>
               <a href="#about" class="btn btn-circle js-scroll-trigger">
                 <i class="fa fa-angle-double-down animated"></i>
@@ -61,4 +61,4 @@ class Home extends Component {
         );
     }
 }
-export default Home;
+export default withRouter(Index);

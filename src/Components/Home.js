@@ -4,92 +4,108 @@ import Footer from './Footer'
 import Table from './Table'
 import { withRouter } from 'react-router-dom'
 import axios from 'axios'
+import swal from 'sweetalert2'
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
             action: 'open',
-            tableHeaderData: ['Title', 'Employer', 'Skill', 'Avg Bid', 'Budget Range', 'Budget Period','No. of Bids'],
+            tableHeaderData: ['Title', 'Employer', 'Skill', 'Avg Bid', 'Budget Range', 'Budget Period', 'No. of Bids', 'Action'],
             tableRowData: []
         };
     }
 
 
     componentWillMount() {
-        let getOpenProjects = 'http://localhost:3001/getOpenProjects';
-        let id = localStorage.getItem('id');
-        if (id) {
-            var apiPayload = {
-                id: id
-            };
-            axios.post(getOpenProjects, apiPayload)
-                .then(res => {
-                    if (res.data.errorMsg != '') {
-                        this.setState({
-                            errorMessage: res.data.errorMsg
-                        });
-                    } else if (res.data.successMsg != '') {
-                        this.setState({           
-                            tableRowData: res.data.data,
-                        });
-                    } else {
-                        this.setState({
-                            errorMessage: 'Unknown error occurred'
-                        });
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                });
-        }
-    }
+        let url = 'http://localhost:3001/isLoggedIn';
+        axios.get(url,{withCredentials: true})
+            .then(res => {
+                
+                if (res.data.responseCode === 0) {
+                    localStorage.setItem('id', res.data.id);
+                    localStorage.setItem('name', res.data.name);
+                    localStorage.setItem('email', res.data.email);
+                    let getOpenProjects = 'http://localhost:3001/getOpenProjects';
+                    let id = localStorage.getItem('id');
+                    if (id) {
+                        var apiPayload = {
+                            id: id
+                        };
+                        axios.post(getOpenProjects, apiPayload)
+                            .then(res => {
+                                // eslint-disable-next-line
+                                if (res.data.errorMsg != '') {
+                                    this.setState({
+                                        errorMessage: res.data.errorMsg
+                                    });
+                                    // eslint-disable-next-line
+                                } else if (res.data.successMsg != '') {
+                                    this.setState({
+                                        tableRowData: res.data.data,
+                                    });
+                                } else {
+                                    this.setState({
+                                        errorMessage: 'Unknown error occurred'
+                                    });
+                                }
+                            })
+                            .catch(err => {
+                                console.error(err);
+                            });
+                    }            }
+                else {
+                    swal({
+                        type: 'error',
+                        title: 'Login',
+                        text: 'Login Required',
+                      })
+                    this.props.history.push('/login')
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    
 
+    
+    }
     onBackButtonEvent(e) {
         e.preventDefault();
         this.props.history.push('/home');
     }
-
     componentDidMount() {
         window.onpopstate = this.onBackButtonEvent.bind(this);
 
     }
-
     render() {
         return (
-            <div>
-                <Header />
+            <div class='container'>
+                <Header home={'linkActive'}/>
                 <div class="content-wrapper mt-1">
-                    <div class="container-fluid">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="index.html">Home</a>
                             </li>
                             <li class="breadcrumb-item active">Open Projects</li>
                         </ol>
-                        <div class="row mt-1 ml-3">
-                            <div class="col-12">
+                        <div class="row mt-1">
+                            <div class="col-15">
                                 <p></p>
-                                <div class="col-lg-10">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-
-                                        </div>
-
+                                <div class="col-lg-11 container">
+                                    <div class="">
                                         <div>
-                                            <Table action={this.state.action} tableHeaderData={this.state.tableHeaderData} averageBid={this.state.averageBid} tableRowData={this.state.tableRowData} />
+                                            <Table action={this.state.action} tableHeaderData={this.state.tableHeaderData} tableRowData={this.state.tableRowData} />
 
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-                    </div>
+        
 
-                   {<Footer />}                 </div>
+                    {<Footer />}                 </div>
             </div>
-
         );
     }
 }
