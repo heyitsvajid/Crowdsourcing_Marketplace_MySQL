@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../assets/css/bootstrap.css'
-
+import { withRouter } from 'react-router-dom'
 
 class TableHeader extends Component {
   render() {
@@ -9,4 +9,4 @@ class TableHeader extends Component {
           );
   }
 }
-export default TableHeader;
+export default withRouter(TableHeader);

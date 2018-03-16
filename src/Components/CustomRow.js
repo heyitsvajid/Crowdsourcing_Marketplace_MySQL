@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import swal from 'sweetalert2'
 import axios from 'axios';
+import { withRouter } from 'react-router-dom'
 
 class CustomRow extends Component {
 
@@ -57,7 +58,6 @@ class CustomRow extends Component {
 
     }
     renderRows() {
-        debugger;
         if (this.props.action === 'dashboard') {
             return (
                 <tr align='center'>
@@ -115,4 +115,4 @@ class CustomRow extends Component {
         );
     }
 }
-export default CustomRow;
+export default withRouter(CustomRow);
