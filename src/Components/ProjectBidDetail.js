@@ -84,8 +84,9 @@ class ProjectBidDetail extends Component {
             title: 'Hire',
             text: 'Employee Hired',
           })
-          //window.location.href = 'http://localhost:3000/myprojects'
-          
+          setTimeout(function () {
+            window.location.href='http://localhost:3000/myprojects'
+        }, 5000);        
         }
       })
       .catch(err => {

@@ -818,18 +818,26 @@ exports.getUserBidProjects = function (req, res) {
                     // 'from project inner join user on project.employer_id=user.id,project a left outer join bid b on a.id=b.project_id group by a.id,a.title) as project_avg_detail where project_avg_detail.employer_id!='+req.body.id;
 
                     let sqlGetProjects = 'select c.name,sub1.* from (select a.id,a.employer_id,a.title,a.main_skill_id,a.budget_range,a.budget_period,b.bid_amount,b.bid_status,b.user_id,COALESCE(avg(b.bid_amount),0) as average ,count(b.project_id) as count ' +
-                        'from project a left outer join bid b on a.id=b.project_id group by a.id,a.title) as sub1,user c where c.id=sub1.employer_id and sub1.employer_id!=' + req.body.id + ' and sub1.user_id=' + req.body.id;
+                        'from project a left outer join bid b on a.id=b.project_id group by a.id,b.user_id) as sub1,user c where c.id=sub1.employer_id and sub1.employer_id!=' + req.body.id + ' and sub1.user_id=' + req.body.id;
                     console.log(sqlGetProjects);
                     connection.query(sqlGetProjects, function (error, results, fields) {
-                        if (error) throw error;
-                        console.log(results);
-                        connection.release();
-                        console.log('Fetch user project bid Succcessful');
-                        resultObject.errorMsg = '';
-                        resultObject.successMsg = 'Fetch user project bid Succcessful';
-                        resultObject.data = results;
-                        res.json(resultObject);
-                        return;
+                        try {
+                            if (error) throw error;
+                            console.log(results);
+                            connection.release();
+                            console.log('Fetch user project bid Succcessful');
+                            resultObject.errorMsg = '';
+                            resultObject.successMsg = 'Fetch user project bid Succcessful';
+                            resultObject.data = results;
+                            res.json(resultObject);
+                            return;
+
+                        } catch (e) {
+                            console.log('Error Occured');
+                            resultObject.errorMsg = 'Error Occured';
+                            resultObject.successMsg = '';
+                            res.json(resultObject);
+                        }
                     });
                 });
             }

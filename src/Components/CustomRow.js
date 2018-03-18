@@ -79,7 +79,7 @@ class CustomRow extends Component {
                     <td>{this.props.rowData.budget_period} Days</td>
                     <td>{this.props.rowData.count}</td>
                     <td><button className="buttonAction" type="button"
-                        id={this.props.rowData.id} onClick={this.handleClick} >Bid Now</button></td>
+                        id={this.props.rowData.id} onClick={this.handleProjectClick} >Bid Now</button></td>
                 </tr>
             );
         }

@@ -82,8 +82,10 @@ class BidProjectForm extends Component {
                         title: 'Post Bid',
                         text: res.data.successMsg,
                       })
-                    //window.location.href='http://localhost:3000/projectitem'
-                    this.props.history.push('/projectitem');
+                      setTimeout(function () {
+                        window.location.href='http://localhost:3000/projectitem'
+                    }, 5000);
+                      
                 }
             })
             .catch(err => {

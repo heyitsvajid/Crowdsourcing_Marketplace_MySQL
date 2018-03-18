@@ -75,6 +75,7 @@ class ProjectItem extends Component {
             bidNowForm: !this.state.bidNowForm
         });
     }
+
     bidNowForm() {
         if (this.state.bidNowForm) {
             return (
