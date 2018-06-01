@@ -89,6 +89,6 @@ Consists of 18 APIs to serve client requests.
 > This will start ReactJS server on 3000 port and NodeJS server will start at 3001 port.
 
 ## 📝 Author
-[<img src="https://avatars1.githubusercontent.com/u/22077628?v=3&u=927102473ec4fcc03ac2f6200740a9faff91fd55&s=400" align="right" height="100">](http://ddcreationstudios.at/)
+[<img src="" align="right" height="100">](https://github.com/heyitsvajid)
 
-##### Vajid Kagdi <kbd>/ [Github](https://www.freecodecamp.com/ddcreationstudios) / [LinkedIn](https://www.linkedin.com/in/heyitsvajid) / [E-Mail](mailto:vajid9@gmail.com)</kbd>
+##### Vajid Kagdi <kbd> [Github](https://github.com/heyitsvajid) / [LinkedIn](https://www.linkedin.com/in/heyitsvajid) / [E-Mail](mailto:vajid9@gmail.com)</kbd>
