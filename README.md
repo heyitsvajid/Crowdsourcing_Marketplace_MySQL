@@ -9,10 +9,13 @@ Individual assignment for CMPE 273 - Enterprise Distributed Systems course durin
 
 * The goal is to build a distributed enterprise web application which enables the user not only to upload , star/unstar or delete files/folders but also share files/folders to other users, create groups, add/edit/delete members and view their own activity timeline.
 
+
 ## User stories:
+
 * I can Sign Up, Sign In and Logout from application.
+* As an authenticated user, I can bid on projects posted.
 * As an authenticated user, I can Post Project and get bids from other users.
-* As an authenticated user, I canHire freelancer on the basis of bids received.
+* As an authenticated user, I can Hire freelancer on the basis of bids received.
 * As an authenticated user, I can Check open projects and bid on projects posted by other users.
 * As an authenticated user, I can Check project completion date when freelancer is hired.
 * As an authenticated user, I can Create and edit profile information.
@@ -35,13 +38,21 @@ Effective modularisation is used in each component so as to increase reusability
 Consists of 18 APIs to serve client requests.
 ```
 
+* Database :  MySQL
+```
+Consists of mainly 4 tables.
+User : To store user related information
+Project : To stores project details posted by user.
+Attachments : Stores server path for attachments like project document and user profile pictures
+Bid : To store bids
+```
+
+
 ## System Architecture
 ![Architecture](/Architecture.png)
 
 
 ### Technology stack
-
-![tech-stack](http://adsvento.in/images/react/mernstack.png)
 
 <table>
 <thead>
