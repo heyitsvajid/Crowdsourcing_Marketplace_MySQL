@@ -9,15 +9,15 @@ Individual assignment for CMPE 273 - Enterprise Distributed Systems course durin
 
 * The goal is to build a distributed enterprise web application which enables the user not only to upload , star/unstar or delete files/folders but also share files/folders to other users, create groups, add/edit/delete members and view their own activity timeline.
 
-## Features
-* Sign Up, Sign In and Logout functionalities.
-* Post Project and get bids from other users.
-* Hire freelancer on the basis of bids received.
-* Check open projects and bid on projects posted by other users.
-* Check project completion date when freelancer is hired.
-* Create and edit profile information.
+## User stories:
+* I can Sign Up, Sign In and Logout from application.
+* As an authenticated user, I can Post Project and get bids from other users.
+* As an authenticated user, I canHire freelancer on the basis of bids received.
+* As an authenticated user, I can Check open projects and bid on projects posted by other users.
+* As an authenticated user, I can Check project completion date when freelancer is hired.
+* As an authenticated user, I can Create and edit profile information.
 
-> For Detailed Description check [Project Report](https://atom.io/)
+> For Detailed Description check [Project Report](https://docs.google.com/document/d/1oX7vKfWftTV8vgo_s_IeOpl5158lZsKEFVypW7q8KHs/edit?usp=sharing)
 
 
 ## System Design
@@ -87,3 +87,8 @@ Consists of 18 APIs to serve client requests.
 * npm install
 * npm run start-dev 
 > This will start ReactJS server on 3000 port and NodeJS server will start at 3001 port.
+
+## 📝 Author
+[<img src="https://avatars1.githubusercontent.com/u/22077628?v=3&u=927102473ec4fcc03ac2f6200740a9faff91fd55&s=400" align="right" height="100">](http://ddcreationstudios.at/)
+
+##### Vajid Kagdi <kbd>/ [Github](https://www.freecodecamp.com/ddcreationstudios) / [LinkedIn](https://www.linkedin.com/in/heyitsvajid) / [E-Mail](mailto:vajid9@gmail.com)</kbd>
