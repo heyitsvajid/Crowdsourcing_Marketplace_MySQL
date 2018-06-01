@@ -15,15 +15,16 @@ Individual assignment for CMPE 273 - Enterprise Distributed Systems course durin
 * Check open projects and bid on projects posted by other users.
 * Check project completion date when freelancer is hired.
 * Create and edit profile information.
-
 <br/>
+> For Detailed Description check [Project Report](https://atom.io/)
 
 ## System Design
 > Applications uses a simple Client-Server architecture
 
 * Client Side : ReactJS (HTML5 and Bootstrap)
 ```
-Consists of total 20 React components. Effective modularisation is used in each component so as to increase reusability.
+Consists of total 20 React components. 
+Effective modularisation is used in each component so as to increase reusability.
 ```
 
 * Server Side : NodeJS, ExpressJS
@@ -74,14 +75,10 @@ Consists of 18 APIs to serve client requests.
 <br/>
 
 
-### Steps to run Springboot application:
+### Steps to run application:
 
-* Create schema called dropbox
-* import as maven project
-* install all dependencies
-* run the DropBoxApplication class
-
-### Steps to run React side:
-
-* run <code>npm install</code>
-* run <code>npm start</code>
+* Create database schema 
+* Go to path : …\Lab1-Freelancer\freelancer
+* npm install
+* npm run start-dev 
+> This will start ReactJS server on 3000 port and NodeJS server will start at 3001 port.
