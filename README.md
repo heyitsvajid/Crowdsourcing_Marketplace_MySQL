@@ -18,8 +18,15 @@ To demonstrate the use of stateless RESTful web services by creating prototype o
 
 
 ## System Design
+> Applications uses a simple Client-Server architecture
 
-> Applications uses a simple Client-Server architecture and consists of total 20 React components. Effective modularisation is used in each component so as to increase reusability.
+* Client Side : ReactJS (HTML5 and Bootstrap)
+> Consists of total 20 React components. Effective modularisation is used in each component so as to increase reusability.
+  
+* Server Side : NodeJS, ExpressJS
+> Consists of 18 APIs to serve client requests.
+
+
 
 ### Technology stack
 
