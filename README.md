@@ -1,12 +1,13 @@
 # Crowdsourcing Marketplace using MySQL
 To demonstrate the use of stateless RESTful web services by creating prototype of Freelancer web application. (www.freelancer.com).
-
-> Individual assignment for CMPE 273 - Enterprise Distributed Systems course during Software Engineering.
-
+```
+Individual assignment for CMPE 273 - Enterprise Distributed Systems course during Software Engineering.
+```
+<br/>
 ## Goal
 
 * The goal is to build a distributed enterprise web application which enables the user not only to upload , star/unstar or delete files/folders but also share files/folders to other users, create groups, add/edit/delete members and view their own activity timeline.
-
+<br/>
 ## Features
 * Sign Up, Sign In and Logout functionalities.
 * Post Project and get bids from other users.
@@ -15,18 +16,22 @@ To demonstrate the use of stateless RESTful web services by creating prototype o
 * Check project completion date when freelancer is hired.
 * Create and edit profile information.
 
-
+<br/>
 
 ## System Design
 > Applications uses a simple Client-Server architecture
 
 * Client Side : ReactJS (HTML5 and Bootstrap)
-> Consists of total 20 React components. Effective modularisation is used in each component so as to increase reusability.
-  
+```
+Consists of total 20 React components. Effective modularisation is used in each component so as to increase reusability.
+```
+
 * Server Side : NodeJS, ExpressJS
-> Consists of 18 APIs to serve client requests.
 
-
+```
+Consists of 18 APIs to serve client requests.
+```
+<br/>
 
 ### Technology stack
 
