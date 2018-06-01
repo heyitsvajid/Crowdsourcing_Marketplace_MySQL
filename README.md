@@ -5,11 +5,6 @@ To demonstrate the use of stateless RESTful web services by creating prototype o
 Individual assignment for CMPE 273 - Enterprise Distributed Systems course during Software Engineering.
 ```
 
-## Goal
-
-* The goal is to build a distributed enterprise web application which enables the user not only to upload , star/unstar or delete files/folders but also share files/folders to other users, create groups, add/edit/delete members and view their own activity timeline.
-
-
 ## User stories:
 
 * I can Sign Up, Sign In and Logout from application.
